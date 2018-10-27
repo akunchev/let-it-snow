@@ -20,19 +20,19 @@ namespace AvaloniaCoreSnow
             this.AttachDevTools();
 
             DataContext = _viewModel;
+            Renderer.DrawFps = true;
         }
 
         private void InitializeComponent()
         {
-            AvaloniaXamlLoaderPortableXaml.Load(this);
+            AvaloniaXamlLoader.Load(this);
 
-            _img = ((Grid) Content).Children.First();
+            _img = this.Get<Control>("img");
             _img.PointerMoved += Image_PointerMoved;
             _img.PointerPressed += Img_PointerPressed;
 
             // Delegate is called from bg thread, use synchronous call to avoid concurrency issues within Avalonia.
-            _viewModel = new SnowViewModel(() =>
-                Dispatcher.UIThread.InvokeAsync(() => _img.InvalidateVisual()).Wait());
+            _viewModel = new SnowViewModel();
         }
 
         private void Image_PointerMoved(object sender, PointerEventArgs e)
